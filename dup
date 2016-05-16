@@ -10,11 +10,17 @@ require 'digest/md5'
 require 'sdbm'
 
 def hash(file)
-  if File.exist?(file) && File.file?(file) then
-    Digest::MD5.new.update(File.read(file)).to_s
-  else
-    nil
+  res = nil
+  begin
+    if File.exist?(file) && File.file?(file) then
+      res = Digest::MD5.new.update(File.read(file)).to_s
+    else
+      res = nil
+    end
+  rescue
+    res = nil
   end
+  res
 end
 
 def skipfile(file)
@@ -37,7 +43,8 @@ Find.find(root) do |f|
     if h then
       if hashdb[h] then
         puts f
-        puts "  = #{hashdb[h]}"
+        puts "  == #{hashdb[h]}"
+        puts "  size: #{File.size(f)}"
       else
         if File.size(f) > 1000000 then
           hashdb[h] = f
