@@ -1,0 +1,46 @@
+# coding: utf-8
+#/usr/bin/env ruby
+#
+# GitHubのリポジトリのリストをGyazz型式で出力
+# coding: utf-8
+
+require "json"
+require "net/http"
+
+user = ARGV.shift
+unless user
+  STDERR.puts "#{$0} - list GitHub repositories"
+  STDERR.puts "Usage: % ruby #{$0} username"
+  exit
+end
+
+https = Net::HTTP.new('api.github.com',443)
+https.use_ssl = true
+
+puts user
+
+repos = []
+page = 1
+https.start {
+  while true do
+    res = https.get("/users/#{user}/repos?page=#{page}&per_page=100")
+    body = JSON.parse(res.body)
+    if body.length == 0
+      break
+    else
+      body.each { |data|
+        repos << data
+      }
+      page += 1
+    end
+  end
+}
+
+repos.each { |repo|
+  puts "[[#{repo['html_url']} #{repo['name']}]] - #{repo['description']}"
+}
+
+
+
+
+
