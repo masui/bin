@@ -1,0 +1,50 @@
+#!/usr/bin/env ruby
+# -*- coding: utf-8 -*-
+#
+# 同じファイルの存在を調べる
+#
+
+require 'pp'
+require 'find'
+require 'digest/md5'
+require 'sdbm'
+
+def hash(file)
+  if File.exist?(file) && File.file?(file) then
+    Digest::MD5.new.update(File.read(file)).to_s
+  else
+    nil
+  end
+end
+
+def skipfile(file)
+  file =~ /\/.git\// ||
+    file =~ /\/.svn\//
+end
+
+root = File.expand_path("~")
+if ARGV[0] then
+  root = ARGV[0]
+end
+
+hashdb = {}
+
+Find.find(root) do |f|
+  if File.directory?(f)
+  else
+    next if skipfile(f)
+    h = hash(f)
+    if h then
+      if hashdb[h] then
+        puts f
+        puts "  = #{hashdb[h]}"
+      else
+        if File.size(f) > 1000000 then
+          hashdb[h] = f
+        end
+      end
+    end
+  end
+end
+
+
