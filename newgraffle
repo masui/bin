@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+# -*- coding: utf-8 -*-
+# 最新のOmniGraffleファイルを捜す
+
+matched = `/usr/bin/mdfind graffle | grep 'graffle$'`
+
+list = matched.split(/\n/).collect { |file|
+  [file, File.mtime(file)]
+}.sort { |a,b|
+  b[1] <=> a[1]
+}
+
+list.each { |e|
+  puts "#{e[1]} #{e[0]}"
+}
