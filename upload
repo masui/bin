@@ -14,15 +14,6 @@ end
 
 hash = Digest::MD5.new.update(File.read(file)).to_s
 
-# puts "scp #{file} pitecan.com:/www/www.pitecan.com/upload/#{hash}#{ext}"
-# system "scp #{file} pitecan.com:/www/www.pitecan.com/upload/#{hash}#{ext}"
-# system "echo http://pitecan.com/#{hash}#{ext} | pbcopy"
-
-#puts "scp '#{file}' masui.sfc.keio.ac.jp:/Volumes/share/Web/upload/#{hash}#{ext}"
-#system "scp '#{file}' masui.sfc.keio.ac.jp:/Volumes/share/Web/upload/#{hash}#{ext}"
-#system "ssh masui.sfc.keio.ac.jp chmod 644 /Volumes/share/Web/upload/#{hash}#{ext}"
-#system "echo http://masui.sfc.keio.ac.jp/#{hash}#{ext} | pbcopy"
-
 dstfile = "s3://masui.org/#{hash[0]}/#{hash[1]}/#{hash}#{ext}"
 system "/usr/local/bin/s3cmd -c /Users/masui/.s3cfg put --acl-public #{Shellwords.escape(file)} #{dstfile} > /dev/null 2> /dev/null"
 system "echo http://masui.org/#{hash}#{ext}"

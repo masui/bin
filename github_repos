@@ -17,8 +17,6 @@ end
 https = Net::HTTP.new('api.github.com',443)
 https.use_ssl = true
 
-puts user
-
 repos = []
 page = 1
 https.start {
