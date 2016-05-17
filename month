@@ -1,0 +1,46 @@
+# -*- coding: utf-8 -*-
+def dayofweek(y, m, d) # 0 = Sunday 
+  # 1 <= m <= 12, y > 1752 or so
+  t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4]
+  y -= 1 if m < 3
+  (y + y/4 - y/100 + y/400 + t[m-1] + d) % 7
+end
+
+days = [
+  0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+]
+
+def dayname(y, m, d)
+  ['日', '月', '火', '水', '木', '金', '土'][dayofweek(y,m,d)]
+end
+
+month = ARGV.shift.to_i
+year = ARGV.shift.to_i
+
+(1..days[month]).each { |day|
+  puts "#{month}/#{day}(#{dayname(year,month,day)})"
+}
+
+# puts '--'
+
+prevyear = year
+prevmonth = month - 1
+if prevmonth == 0 then
+  prevmonth = 12
+  prevyear -= 1
+end
+nextyear = year
+nextmonth = month + 1
+if nextmonth == 13 then
+  nextmonth = 1
+  nextyear += 1
+end
+# puts "[[#{prevyear}年#{prevmonth}月]] [[#{nextyear}年#{nextmonth}月]]"
+# puts "[[#{year}年]]"
+
+puts "[[予定表 #{prevyear}-#{prevmonth}]] [[予定表 #{nextyear}-#{nextmonth}]]"
+
+
+
+
+
