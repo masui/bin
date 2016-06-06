@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+# coding: utf-8
+#
+# 写真のサムネイルをGyazoにアップしつつ
+# masui.sfc.keio.ac.jpに保存、Gyazzページを作る
+#
+# % gyap [-n] imagefile {imagefile}
+#
+
+# Ruby-exifの使い方
+# https://sites.google.com/site/hymd3a/ruby/ruby-jpeg-exif
+
+exit if ARGV.length < 0
+
+require 'rubygems'
+require 'exifr'
+
+exif = EXIFR::JPEG.new(ARGV[0])
+p exif.date_time
+#   return exif.date_time if exif && exif.date_time
+

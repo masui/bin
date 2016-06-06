@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+# -*- coding: utf-8 -*-
+#
+# 日付をタイトルにしたGyazzページを開く
+#
+# % memo
+#
+
+require 'rubygems'
+require 'gyazz'
+
+gyazzname = 'masui'
+user = 'masui'
+password = 'pobox689'
+
+t = Time.now
+text = "[[#{t.year}/#{t.month}/#{t.day}]] [[#{t.year}/#{t.month}]]" 
+title = t.strftime('%Y%m%d%H%M%S')
+
+wiki = Gyazz::Wiki.new(gyazzname)
+wiki.auth = {:username => user, :password => password}
+
+page = wiki.page(title)
+page.text = text
+
+url = "http://Gyazz.com/#{gyazzname}/#{title}"
+system "open /Applications/Firefox.app '#{url}'"
