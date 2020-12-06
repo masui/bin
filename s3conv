@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+s3url = ARGV[0]
+unless s3url
+  STDERR.puts "% s3conv s3url"
+  exit
+end
+
+s3url =~ /masui\.org.*([0-9a-fA-F]{32})(\..*)?$/
+hash = $1
+ext = $2
+
+hash =~ /(.)(.)(.{10})(.{10})(.{10})/
+puts  "http://masui.org/=#{$1}#{$2}#{$5}#{$4}#{$3}#{ext}"
+
+hash =~ /(.)(.)(.{15})(.{15})/
+puts  "http://masui.org/_#{$1}#{$2}#{$4}#{$3}#{ext}"
+
+puts "https://s3-ap-northeast-1.amazonaws.com/masui.org/#{hash[0]}/#{hash[1]}/#{hash}#{ext}"
+
